@@ -4,6 +4,8 @@ import Form from '../../components/form/form'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserMinus } from '@fortawesome/free-solid-svg-icons'
 import { faHandPointRight } from '@fortawesome/free-solid-svg-icons'
+import Loading from '../../components/loading/loading'
+
 import reducer from '../../services/reducers'
 
 import './list.css'
@@ -13,6 +15,7 @@ const List = (props) => {
     const iconRemove = <FontAwesomeIcon icon={faUserMinus} />
     const iconHasFriend = <FontAwesomeIcon icon={faHandPointRight} />
 
+    let [ isLoading, setLoading] = useState(false)
     const [ shuffler, setShuffler ] = useState([])
       
     const initialState = []
@@ -20,16 +23,21 @@ const List = (props) => {
     const [ state, dispatch ] = useReducer(reducer, initialState)
 
     useEffect(() => {
+        setLoading(true)
         async function fetchData() {
           const response =  await api.get('/friends')
           dispatch({type: 'loadData', data: response.data})
+          setLoading(false)
         }
         fetchData()
     }, [state.length]);
 
     async function handleShuffler(){
+        setLoading(true)
         const response =  await api.get('/make_secret_friend')
         setShuffler(response.data)
+        setLoading(false)
+
     }
 
     async function handleRemove(id, index, elem){
@@ -59,6 +67,7 @@ const List = (props) => {
                 } 
 
                 <ul>
+                    {isLoading===true && <Loading />}
                     {
                     shuffler.length === 0 ?
                         state.map((res, index)=> (

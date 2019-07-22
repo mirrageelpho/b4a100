@@ -1,0 +1,27 @@
+div#loading-conteiner{
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 115px;
+    margin: 0 auto;
+}
+
+div#loading-conteiner .loading {
+    animation: spin infinite 1s linear;
+    width: 15px;
+    height: 15px;
+    margin-left: 5px;
+    pointer-events: none;
+  }
+  
+
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
